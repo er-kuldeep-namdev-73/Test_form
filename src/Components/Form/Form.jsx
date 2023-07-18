@@ -1,18 +1,23 @@
-import React from 'react'
+import React, { memo, useContext } from 'react'
+import FormContext from '../../context/FormContext';
 
 const Form = ({children}) => {
+
+
+    const {formData} = useContext(FormContext);
 
 
     function handleSubmit(e)
     {
         e.preventDefault();
+        console.log(formData)
     }   
 
 
     return (
         <>
 
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className='w-[90vw]'>
             {
                 children
             }
@@ -23,4 +28,4 @@ const Form = ({children}) => {
     )
 }
 
-export default Form
+export default memo(Form)
