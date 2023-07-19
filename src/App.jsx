@@ -6,6 +6,9 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import FormContext from './context/FormContext';
+import RandomQuestions from './Components/RandomQuestions/RandomQuestions'
+import PredefinedQuestions from './Components/PredefinedQuestions/PredefinedQuestions'
+import Button from './Components/Button/Button'
 
 const App = () => {
 
@@ -19,10 +22,22 @@ const App = () => {
     testType:'',
     managedBy:{name:'Agent', _isMcq:true, _isDisabled:true},
     screeningType:'',
-    _isValid:true
+    totalQuestions:'0',
+    randomQuestions:{},
+    predefinedQuestions:{
+      totalQuestions:0,
+    },
+    _isValid:false
   });
 
 
+
+  function handleSubmit(e)
+  {
+    e.preventDefault();
+    console.log(formData)
+    alert(1);
+  }
 
   return (
     <>
@@ -40,7 +55,7 @@ const App = () => {
 
       <FormContext.Provider value={{formData, setFormData}}>
 
-        <Form>
+        <Form onFormSubmission={handleSubmit}>
 
           <div className='flex'>
           <Field
@@ -61,6 +76,7 @@ const App = () => {
 
           <Field
             control="selectlib"
+            multiSelect="false"
             fieldName="testType"
             fieldLabel="Select Test Type, or add new test type"
             fieldPlaceHolder="Select Test Type, or add new test type"
@@ -98,8 +114,8 @@ const App = () => {
 
           <Field
             control="input"
-            fieldName="questionNo"
-            fieldType="text"
+            fieldName="totalQuestions"
+            fieldType="number"
             fieldLabel="Total Number Of Question"
             fieldErrorMsg="Value must be an positive number"
             fieldPattern="^[0-9]\d*"
@@ -107,17 +123,30 @@ const App = () => {
           />
 
           <TabSwitch 
-            tabs={["Random Questions", "Predefined Questions"]}
+            totalQuestions={formData.totalQuestions}
+            tabs={[
+              {label:"Random Questions", value: <RandomQuestions/>},
+              {label:"Predefined Questions", value: <PredefinedQuestions/>},
+            ]}
           />
 
           <div>
-            <button className={formData._isValid ? 'rounded bg-blue-600 text-white p-2 mr-[20px]' : 'rounded bg-gray-600 text-white p-2 mr-[20px]'} disabled={formData._isValid}>Submit Candidate Test</button>
-            <button className='rounded bg-gray-600 text-white p-2'>Final Submit</button>
+            <Button
+              btnClass={!formData._isValid ? 'rounded bg-blue-600 text-white p-2 mr-[20px]' : 'rounded bg-gray-600 text-white p-2 mr-[20px]'}
+              isBtnDisabled={formData._isValid}
+              btnType='submit'
+            >
+              Submit Candidate Test
+            </Button>
+
+            <Button
+              btnClass={'rounded bg-gray-600 text-white p-2'}
+              isBtnDisabled={formData._isValid}
+              btnType='button'
+            >
+              Final Submit
+            </Button>
           </div>
-
-          
-
-
 
         </Form>
       </FormContext.Provider>

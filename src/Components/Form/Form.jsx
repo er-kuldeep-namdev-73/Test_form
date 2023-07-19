@@ -1,28 +1,16 @@
 import React, { memo, useContext } from 'react'
 import FormContext from '../../context/FormContext';
 
-const Form = ({children}) => {
-
-
-    const {formData} = useContext(FormContext);
-
-
-    function handleSubmit(e)
-    {
-        e.preventDefault();
-        console.log(formData)
-    }   
-
+const Form = ({children, onFormSubmission}) => {
 
     return (
         <>
 
-            <form onSubmit={handleSubmit} className='w-[90vw]'>
+            <form onSubmit={onFormSubmission} className='w-[90vw]'>
             {
                 children
             }
             </form>
-
 
         </>
     )

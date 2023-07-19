@@ -9,12 +9,14 @@ const Input = ({fieldLabel, fieldType, fieldPlaceHolder, fieldPattern, fieldErro
 
     console.log("Input")
 
-    const {setFormData} = useContext(FormContext);
+    const {formData, setFormData} = useContext(FormContext);
+
 
     // handle input change function
     function handleInputChange(e)
     {
         // console.log(e)
+        eval('formData')
 
         if(fieldPattern)
         {
@@ -23,7 +25,18 @@ const Input = ({fieldLabel, fieldType, fieldPlaceHolder, fieldPattern, fieldErro
                 toast.error(fieldErrorMsg);
         }
 
-        setFormData((prev)=>({...prev, [fieldName]: e.target.value}));
+        if(fieldName.includes("predefined")) 
+        {
+            if(fieldName.includes("totalQuestions"))
+            {
+                if(Number(e.target.value) > Number(formData.totalQuestions))
+                    toast.error("Value exceeded from the provided value.") 
+                else
+                    setFormData((prev)=>({...prev, predefinedQuestions: {...prev.predefinedQuestions, totalQuestions:e.target.value}}))
+            }
+        }
+        else
+            setFormData((prev)=>({...prev, [fieldName]: e.target.value}));
         
     }
 
@@ -50,7 +63,10 @@ const Input = ({fieldLabel, fieldType, fieldPlaceHolder, fieldPattern, fieldErro
             <Label labelName={fieldLabel} labelFor={fieldName}/>
         }
         
-        <input className='inputField w-[100%]' id={fieldName} type={fieldType} placeholder={fieldPlaceHolder} onChange={(e)=>debouncedInputData(e)} value={fieldValue}/>
+        {
+            <input className='inputField w-[100%]' id={fieldName} type={fieldType} placeholder={fieldPlaceHolder} onChange={(e)=>debouncedInputData(e)} value={fieldValue}/>
+        }
+
 
         </div>
     )

@@ -3,9 +3,10 @@ import CreatableSelect from 'react-select/creatable';
 import Label from '../Label/Label';
 import FormContext from '../../context/FormContext';
 
-const SelectLib = ({multiSelect=false, fieldLabel, fieldPlaceHolder, fieldOptions, fieldName, fieldClass}) => {
+const SelectLib = ({multiSelect="true", fieldLabel, fieldPlaceHolder, fieldOptions, fieldName, fieldClass}) => {
 
     const {setFormData} = useContext(FormContext);
+
 
     function handleSelectChange(option)
     {
@@ -24,7 +25,7 @@ const SelectLib = ({multiSelect=false, fieldLabel, fieldPlaceHolder, fieldOption
             <Label labelName={fieldLabel} labelFor={fieldName}/>
         }
         {
-            {multiSelect} 
+            (multiSelect === "true")
             
             ?
 
