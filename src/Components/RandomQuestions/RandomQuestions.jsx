@@ -1,21 +1,63 @@
-import React from 'react'
+import React, {useRef,useState } from 'react'
 import Field from '../Field/Field'
-import SelectLib from '../SelectLib/SelectLib'
+import RandomAddTechnology from '../RandomAddTechnology/RandomAddTechnology';
 
 const RandomQuestions = () => {
 
-
-    let testTypeOptions = [
-        { label: 'coding', value: 'coding' },
-        { label: 'screening', value: 'screening' }
+    let technologies = [
+        { label: 'Python', value: 'Python' },
+        { label: 'Java', value: 'Java' },
+        { label: 'React', value: 'React' }
     ]
+
+    
+    let baseData = {
+        techName: "",
+        mcq: 0,
+        programming: 0,
+        descreptive: 0,
+    }
+    
+    const techRef = useRef(1)
+    
+    const [selectedTech, setSelectedTech] = useState('')
+
+    const [technology, setTechnology] = useState({
+        [`tech${techRef.current}`]: { ...baseData }
+    })
+
+    const[allTechnology,setAllTechnology]=useState([[...technologies]])
+
+    function handleAddNewTechnolgy() {
+        // setTechnology({ ...technology, [`tech${techRef.current + 1}`]: baseData })
+        // techRef.current += 1
+            let selected = selectedTech.value;
+            let copyData = [...allTechnology.slice(-1)]
+            let copyalltech = [...allTechnology]
+            // console.log(copyData, selected)
+            setSelectedTech('');
+
+            copyData = copyData[0].filter(data=>(data.value != selected))
+
+            copyalltech.push(copyData)
+
+            setAllTechnology([...copyalltech]);
+    }
+
+    function handleDeleteNew(index){
+      
+        let copyData = [...allTechnology]
+        copyData.splice(index,1)
+        setAllTechnology([...copyData])
+
+    } 
 
     return (
 
         <div>
             <Field
                 control="input"
-                fieldName="questionNo"
+                fieldName="random.totalQuestions"
                 fieldType="text"
                 fieldLabel="Random Questions"
                 fieldErrorMsg="Value must be an positive number"
@@ -23,46 +65,16 @@ const RandomQuestions = () => {
                 fieldClass="w-[500px]"
                 fieldPlaceHolder="Random Questions"
             />
-            <Field
-                control="selectlib"
-                fieldName="testType"
-                fieldLabel="Technology"
-                fieldPlaceHolder="Select"
-                fieldOptions={testTypeOptions}
-                fieldClass="w-[500px]"
-            />
-            <div className="flex flex-wrap justify-between">
-                <Field
-                    control="input"
-                    fieldName="questionNo"
-                    fieldType="text"
-                    fieldLabel="No. of descreptive Questions"
-                    fieldErrorMsg="No. Of Descreptive Questions"
-                    fieldPattern="^[0-9]\d*"
-                    fieldClass="w-[350px]"
-                    fieldPlaceHolder="Descreptive Questions"
-                />
-                <Field
-                    control="input"
-                    fieldName="questionNo"
-                    fieldType="text"
-                    fieldLabel="No. Of Programming Questions"
-                    fieldErrorMsg="No. Of Programming Questions"
-                    fieldPattern="^[0-9]\d*"
-                    fieldClass="w-[350px]"
-                    fieldPlaceHolder="Proframming Questions"
-                />
-                <Field
-                    control="input"
-                    fieldName="questionNo"
-                    fieldType="text"
-                    fieldLabel="No. Of MCQ Questions"
-                    fieldErrorMsg="No. Of MCQ Questions"
-                    fieldPattern="^[0-9]\d*"
-                    fieldClass="w-[350px]"
-                    fieldPlaceHolder="Random Questions"
-                />
-            </div>
+           {
+            allTechnology.map((tech,index)=>{
+                return (
+                    <div className='flex' key={index}>
+                        <RandomAddTechnology setSelectedTech={setSelectedTech} handleAddNewTechnolgy={handleAddNewTechnolgy} technologies={tech} />
+                        {(index>0)?<span className='text-red-600/100 mt-11 ms-5 text-xl cursor-pointer' onClick={()=>handleDeleteNew(index)} >&#x2296;</span>:null}
+                    </div>
+                )
+            })
+           }
         </div>
 
     )

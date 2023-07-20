@@ -31,10 +31,10 @@ const Select = ({fieldName, fieldLabel, fieldOptions, fieldClass}) => {
        <Label labelName={fieldLabel} labelFor={fieldName}/>
     }
     
-    <select className='w-[100%] p-2 border bg-white rounded' onClick={handleSelectChange} defaultValue={fieldName === 'managedBy' ? formData.managedBy.name : "DEFAULT"}>
+    <select className='w-[100%] p-2 border bg-white rounded' onClick={handleSelectChange} >
         {
             fieldOptions.map((option, index)=>(
-                <option key={index} value={option}>{option}</option>
+                typeof option==="object"?<option key={index} value={option.value}>{option.value}</option>:<option key={index} value={option}>{option}</option>
             ))
         }
     </select>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import Form from './Components/Form/Form'
 import Field from './Components/Field/Field'
 import TabSwitch from './Components/TabSwitch/TabSwitch'
@@ -17,27 +17,38 @@ const App = () => {
     { label: 'screening', value: 'screening' }
   ]
 
+  // const[btn,setBtn]=useState(false)
+
   const [formData, setFormData] = useState({
-    testName:'',
-    testType:'',
-    managedBy:{name:'Agent', _isMcq:true, _isDisabled:true},
-    screeningType:'',
-    totalQuestions:'0',
-    randomQuestions:{},
-    predefinedQuestions:{
-      totalQuestions:0,
+    testName: '',
+    testType: '',
+    managedBy: { name: 'Agent', _isMcq: true, _isDisabled: true },
+    screeningType: '',
+    totalQuestions: 0,
+    predefinedQuestions: {
+      totalQuestions: 0,
     },
-    _isValid:false
+    randomQuestions: {
+      totalQuestions:0,
+      descreptiveQuestions:0,
+      programming:0,
+      mcq:0,
+      technology:[]
+    },
+
+    _isValid: false
   });
 
+  console.log(formData)
 
 
-  function handleSubmit(e)
-  {
+  function handleSubmit(e) {
     e.preventDefault();
     console.log(formData)
     alert(1);
   }
+
+  // console.log("formData",formData.randomQuestions.totalQuestions)
 
   return (
     <>
@@ -53,26 +64,31 @@ const App = () => {
       />
       <ToastContainer />
 
-      <FormContext.Provider value={{formData, setFormData}}>
+      <FormContext.Provider value={{ formData, setFormData }}>
 
         <Form onFormSubmission={handleSubmit}>
 
+          {/* Start Test Name field */}
           <div className='flex'>
-          <Field
-            control="input"
-            fieldName="testName"
-            fieldType="text"
-            fieldLabel="Test Name"
-            fieldPlaceHolder="Type test name"
-            fieldErrorMsg="Error Message"
-            fieldClass="w-[500px]"
-          />
+            <Field
+              control="input"
+              fieldName="testName"
+              fieldType="text"
+              fieldLabel="Test Name"
+              fieldPlaceHolder="Type test name"
+              fieldErrorMsg="Error Message"
+              fieldClass="w-[500px]"
+              // fieldPattern="[a-zA-Z_ -]+$"
+            />
 
-          <span
-           className='text-green-600/100 text-xl'
-          >&#8853;</span>
+            <span
+              className='text-green-600/100 text-xl mt-11 ms-5'
+            >&#8853;</span>
           </div>
 
+          {/* End Test Name Field */}
+
+          {/* start Test Type Select Field */}
 
           <Field
             control="selectlib"
@@ -84,26 +100,32 @@ const App = () => {
             fieldClass="w-[500px]"
           />
 
+          {/* End Test Type Select Field */}
+
+
+          {/* Start Managed By field */}
           <div className='flex'>
 
-              <Field
-                control="select"
-                fieldName="managedBy"
-                fieldLabel="Managed By"
-                fieldOptions={["Agent", "Candidate"]}
-                fieldClass="w-[500px]"
-              />
+            <Field
+              control="select"
+              fieldName="managedBy"
+              fieldLabel="Managed By"
+              fieldOptions={["Agent", "Candidate"]}
+              fieldClass="w-[500px]"
+            />
 
-              <Field
-                control="radio"
-                fieldLabel="isMcq"
-                fieldOptions={["Yes", "No"]}
-                fieldClass="w-[250px] mx-5"
-              />
+            <Field
+              control="radio"
+              fieldLabel="isMcq"
+              fieldOptions={["Yes", "No"]}
+              fieldClass="w-[250px] mx-5"
+            />
 
           </div>
 
+          {/* End Managed By field */}
 
+          {/* Start Screen Test Type Field */}
           <Field
             control="select"
             fieldName="screenType"
@@ -111,7 +133,9 @@ const App = () => {
             fieldOptions={["Pre Interview", "Post Interview"]}
             fieldClass="w-[500px]"
           />
+          {/* End Screen Test Type Field */}
 
+          {/* Start Total number of Question field */}
           <Field
             control="input"
             fieldName="totalQuestions"
@@ -121,15 +145,21 @@ const App = () => {
             fieldPattern="^[0-9]\d*"
             fieldClass="w-[500px]"
           />
+          {/* End Total Number of Question Field */}
 
-          <TabSwitch 
+          {/* Start Tab Switch field */}
+
+          <TabSwitch
             totalQuestions={formData.totalQuestions}
             tabs={[
-              {label:"Random Questions", value: <RandomQuestions/>},
-              {label:"Predefined Questions", value: <PredefinedQuestions/>},
+              { label: "Random Questions", value: <RandomQuestions/> },
+              { label: "Predefined Questions", value: <PredefinedQuestions /> },
             ]}
           />
 
+          {/* End Tab Switch Field */}
+
+          {/* Start Button Field */}
           <div>
             <Button
               btnClass={!formData._isValid ? 'rounded bg-blue-600 text-white p-2 mr-[20px]' : 'rounded bg-gray-600 text-white p-2 mr-[20px]'}
@@ -147,6 +177,8 @@ const App = () => {
               Final Submit
             </Button>
           </div>
+
+          {/* End Button Field */}
 
         </Form>
       </FormContext.Provider>

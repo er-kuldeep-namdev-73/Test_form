@@ -6,7 +6,7 @@ const Radio = ({fieldLabel, fieldOptions, fieldClass}) => {
 
     const {formData, setFormData} = useContext(FormContext);
 
-    console.log(formData)
+    // console.log(formData)
 
     function handleRadioChange(e)
     {

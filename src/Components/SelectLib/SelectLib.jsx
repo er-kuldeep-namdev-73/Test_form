@@ -3,7 +3,7 @@ import CreatableSelect from 'react-select/creatable';
 import Label from '../Label/Label';
 import FormContext from '../../context/FormContext';
 
-const SelectLib = ({multiSelect="true", fieldLabel, fieldPlaceHolder, fieldOptions, fieldName, fieldClass}) => {
+const SelectLib = ({multiSelect="true", fieldLabel, fieldPlaceHolder, fieldOptions, fieldName, fieldClass, onChange}) => {
 
     const {setFormData} = useContext(FormContext);
 
@@ -18,6 +18,14 @@ const SelectLib = ({multiSelect="true", fieldLabel, fieldPlaceHolder, fieldOptio
         console.log(option)
     }
 
+    function handleMultiSelect(value)
+    {
+        if(fieldName.includes("random.technology"))
+        {
+            setFormData((prev)=>({...prev, randomQuestions: {...prev.randomQuestions, technology:[...value]}}))
+        }
+    }
+
     return (
         <div className={fieldClass}>
          {
@@ -29,11 +37,11 @@ const SelectLib = ({multiSelect="true", fieldLabel, fieldPlaceHolder, fieldOptio
             
             ?
 
-            <CreatableSelect isMulti options={fieldOptions} placeholder={fieldPlaceHolder}/>
+            <CreatableSelect isMulti options={fieldOptions} placeholder={fieldPlaceHolder} onChange={onChange ?? handleMultiSelect}/>
             
             :
 
-            <CreatableSelect isClearable options={fieldOptions} placeholder={fieldPlaceHolder} onChange={handleSelectChange}/>
+            <CreatableSelect isClearable options={fieldOptions} placeholder={fieldPlaceHolder} onChange={onChange ?? handleSelectChange}/>
         }
         </div>
     )
